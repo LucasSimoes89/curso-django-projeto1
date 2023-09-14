@@ -43,6 +43,16 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertEqual(len(response.context['recipes']), 1)
         self.assertEqual(response_context_recipes.is_published, True)
 
+    def teste_recipe_home_template_dont_load_recipe_not_publisehd(self):
+        #  Need a recipe for test
+        self.make_recipe(is_published=False)
+        response = self.client.get(reverse('recipes:home'))
+
+        self.assertIn(
+            'Not Found',
+            response.content.decode('utf-8')
+        )
+
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(
             reverse('recipes:category', kwargs={'category_id': 1000}))
@@ -56,7 +66,7 @@ class RecipeViewsTest(RecipeTestBase):
 
     def teste_recipe_category_template_loads_recipes(self):
         needed_title = 'This is a category test'
-        
+
         #  Need a recipe for test
         self.make_recipe(title=needed_title)
 
@@ -64,6 +74,15 @@ class RecipeViewsTest(RecipeTestBase):
         content = response.content.decode('utf-8')
 
         self.assertIn(needed_title, content)
+
+    def teste_recipe_category_template_dont_load_recipe_not_publisehd(self):
+        #  Need a recipe for test
+        recipe = self.make_recipe(is_published=False)
+        response = self.client.get(
+            reverse('recipes:recipe', kwargs={'id': recipe.category.id})
+        )
+
+        self.assertEqual(response.status_code, 404)
 
     def test_recipe_detail_view_function_is_correct(self):
         view = resolve(reverse('recipes:recipe', kwargs={'id': 1}))
@@ -92,3 +111,17 @@ class RecipeViewsTest(RecipeTestBase):
         content = response.content.decode('utf-8')
 
         self.assertIn(needed_title, content)
+
+    def teste_recipe_detail_template_dont_load_recipe_not_publisehd(self):
+        #  Need a recipe for test
+        recipe = self.make_recipe(is_published=False)
+        response = self.client.get(
+            reverse(
+                'recipes:recipe',
+                kwargs={
+                    'id': recipe.category.id
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)
