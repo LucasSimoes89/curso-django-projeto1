@@ -1,8 +1,5 @@
 from unittest import TestCase
-from django.urls import reverse
 from utils.pagination import make_pagination_range
-from .models import Recipe
-from django.shortcuts import get_list_or_404
 
 
 class PaginationTest(TestCase):
