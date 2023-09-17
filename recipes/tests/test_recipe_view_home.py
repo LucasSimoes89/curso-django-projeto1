@@ -43,7 +43,7 @@ class RecipeHomeViewsTest(RecipeTestBase):
         self.assertEqual(len(response.context['recipes']), 1)
         self.assertEqual(response_context_recipes.is_published, True)
 
-    def teste_recipe_home_template_dont_load_recipe_not_publisehd(self):
+    def test_recipe_home_template_dont_load_recipe_not_publisehd(self):
         #  Need a recipe for test
         self.make_recipe(is_published=False)
         response = self.client.get(reverse('recipes:home'))
