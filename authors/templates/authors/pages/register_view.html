@@ -4,10 +4,12 @@
 
 {% block content %}
     <div class="main-containt center container">
-        <h2>Register</h2>
+        <h2>Register  </h2>
     </div>
     <div class="main-containt container">
-        <form action="" method="POST">
+        <form action="{% url "authors:create" %}" method="POST">
+            {% csrf_token %}
+
             <div class="form-content form-content-grid">
                 {% for field in form %}
                     <div class="form-group">
